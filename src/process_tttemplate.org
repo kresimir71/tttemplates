@@ -2,7 +2,9 @@
 
 << '//'
 
-Fetch arguments, namely:
+* Multipass boilerplate script in bash and php that handles a given directory
+  
+** Fetch arguments, namely:
 
 - bash input configuration file: 
    5. a bash file to define variables to be used for replace in step 60. The variables must begin with prefix ttt_, e.g. export ttt_var1=val1
@@ -70,11 +72,18 @@ cd "$destdir01"
 
 << '//'
 
+** Prepare destination directory
+  
 50. find all files and directories and sort them deepest last (thus directories also) (bash sort assumed enough)
 
-60. make new version of the found files and directories by: replace {var} in file names (all directories also, e.g. dir1_{ttt_var1}/dir2_{ttt_var2}/file_{ttt_var3}.txt.phptt becomes dir1_val1/dir2_val2/file_val3.txt.phptt ) by value of var
+60. make new version of the found files and directories by: replace {var} in file names (all directories also, e.g.
 
-70. (if distinct) move each file by mv and dir to its new version by mkdir
+#+BEGIN_SRC
+     dir1_{ttt_var1}/dir2_{ttt_var2}/file_{ttt_var3}.txt.phptt becomes dir1_val1/dir2_val2/file_val3.txt.phptt
+#+END_SRC
+    ) by value of var
+
+70. (if distinct) move each file by mv and each directory to its new version by mkdir
 
 75. remove all old directories
 
@@ -159,10 +168,12 @@ done
 
 << '//'
 
+** Process templates with php
+  
 80.  find all files,(no directories), with .phptt extension
 
 90.  process the files with php interpreter. In the result remove .phptt extension from the file. If the file extension is .php.phptt, then replace >?php with <?php and ?< with ?> in that file. 
-100 in step 90 use
+100. in step 90 use
 
 <?php
 require 'settings.php';

@@ -1,0 +1,9 @@
+
+<?php
+echo 'in php';
+?>
+This text will be changed.
+
+>?php
+echo 'resulting in php';
+?<

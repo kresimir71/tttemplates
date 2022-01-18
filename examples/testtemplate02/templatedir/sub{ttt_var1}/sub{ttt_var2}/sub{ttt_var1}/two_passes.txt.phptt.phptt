@@ -1,0 +1,5 @@
+    >?php
+     <?php
+       echo "echo \"After 2 passes\";";
+     ?>
+    ?<

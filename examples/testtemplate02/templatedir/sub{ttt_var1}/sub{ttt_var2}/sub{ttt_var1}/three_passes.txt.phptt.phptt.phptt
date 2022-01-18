@@ -1,0 +1,7 @@
+   >??php
+    >?php
+     <?php
+       echo "echo \"echo \\\"After 3 passes\\\";\";";
+     ?>
+    ?<
+   ??<
