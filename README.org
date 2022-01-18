@@ -119,25 +119,37 @@ BASEDIR01=`pwd`
 
 #+BEGIN_SRC
 
-cd examples/testtemplate/templatedir
-[ "$BASEDIR01" != ""  ] && cd $BASEDIR01/examples/testtemplate/templatedir
-bash ../../../src/process_tttemplate.org ../config.sh ../config.php /tmp/testtemplate_result
-cd ../../..
-
+(todo)
 #+END_SRC
    
 ** automake
 
+#+BEGIN_SRC
+(todo)
+#+END_SRC
+
 ** wpplugin
 
+#+BEGIN_SRC
+(todo)
+#+END_SRC
+   
 ** wp admin customizer
 
 This has worked before. Now at least for illustration.
 
 *** textarea or color  section
 
+#+BEGIN_SRC
+(todo)
+#+END_SRC
+    
 ** php script with arguments
 
+#+BEGIN_SRC
+(todo)
+#+END_SRC
+   
 ** testtemplate02 5 passes
 
 #+BEGIN_SRC
