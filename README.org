@@ -63,16 +63,22 @@ The files of the form
 
  path/name.phptt
 
+#+END_SRC
+
 will be processed by 'php' by using 
 
 #+BEGIN_SRC
 
  require 'settings.php' 
 
+#+END_SRC
+
 first, where settings.php is an input configuration file to the process. The result will be the file
 
 #+BEGIN_SRC
 
  path/name
+
+#+END_SRC
 
 The other files which do not have .phptt extension suffix will not be processed and will be left as they are.
