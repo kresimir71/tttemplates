@@ -1,0 +1,78 @@
+* Introduction
+This is a suite of scripts that processes boilerplate templates written in bash and php. It works like this:
+
+The utility takes a directory tree of template files of following sorts:
+
+#+BEGIN_SRC
+
+ path/name
+ path/name.phptt
+ path/name.php.phptt
+
+#+END_SRC
+
+where 'path' and 'name' can also be string templates like
+
+#+BEGIN_SRC
+
+ dir1_{ttt_var1}/dir2_{ttt_var2}/file_{ttt_var3}.txt.phptt
+
+#+END_SRC
+
+where the variables like 'ttt_var1' will be defined in the shell script settings.sh which is an input to the processing. The prefix 'ttt_' for the variables is required.
+
+The files of the form 
+
+#+BEGIN_SRC
+
+ path/name.php.phptt
+
+#+END_SRC
+
+will be processed by 'php' by using 
+
+#+BEGIN_SRC
+
+ require 'settings.php' 
+
+#+END_SRC
+
+first, where settings.php is an input configuration file to the process. The result will be the file
+
+#+BEGIN_SRC
+
+ path/name.php
+
+#+END_SRC
+
+in which a search/replace will be done:
+
+#+BEGIN_SRC
+
+ >?php with <?php 
+      and 
+    ?< with ?>
+
+#+END_SRC
+
+(That defines how template that has to result in php source is processed: php template which produces php!)
+
+The files of the form 
+
+#+BEGIN_SRC
+
+ path/name.phptt
+
+will be processed by 'php' by using 
+
+#+BEGIN_SRC
+
+ require 'settings.php' 
+
+first, where settings.php is an input configuration file to the process. The result will be the file
+
+#+BEGIN_SRC
+
+ path/name
+
+The other files which do not have .phptt extension suffix will not be processed and will be left as they are.
