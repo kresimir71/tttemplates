@@ -82,3 +82,34 @@ first, where settings.php is an input configuration file to the process. The res
 #+END_SRC
 
 The other files which do not have .phptt extension suffix will not be processed and will be left as they are.
+
+It is also possible to process file in multiple passes. When a file has the form
+
+#+BEGIN_SRC
+ name.phptt.phptt
+ name.phptt.phptt.phptt
+ name.phptt.phptt.phptt.phptt
+ name.phptt.phptt.phptt.phptt.phptt
+#+END_SRC
+
+then php will be called multiple times for that file. The inner blocks of php then use the following delimiters:
+
+#+BEGIN_SRC
+ >?php and ?<
+ >??php and ??<
+ >???php and ???<
+ >????php and ????<
+ >?????php and ?????<
+#+END_SRC
+
+* Source
+  
+* Examples
+
+To prepare the suite for usage, first checkout the project from Github:
+
+#+BEGIN_SRC
+git clone https://github.com/kresimir71/tttemplates.git
+cd tttemplates
+#+END_SRC
+

@@ -1,8 +1,23 @@
 
 
-
 << '//'
-* Introduction
+
+Fetch arguments, namely:
+
+- bash input configuration file: 
+   5. a bash file to define variables to be used for replace in step 60. The variables must begin with prefix ttt_, e.g. export ttt_var1=val1
+
+- php input configuration file: 
+   6. a php file to include in step 90.
+
+- non existing destination directory for output
+
+10. Get destination directory and abort if it exists.
+
+30. Assumed is that the current directory is the source directory. Copy current directory to destination directory.
+
+40. Change to destination directory.
+
 //
 
 #+BEGIN_SRC
@@ -50,5 +65,180 @@ mkdir "$destdir01"
 cp -rf * "$destdir01"/.
 
 cd "$destdir01"
+
+#+END_SRC
+
+<< '//'
+
+50. find all files and directories and sort them deepest last (thus directories also) (bash sort assumed enough)
+
+60. make new version of the found files and directories by: replace {var} in file names (all directories also, e.g. dir1_{ttt_var1}/dir2_{ttt_var2}/file_{ttt_var3}.txt.phptt becomes dir1_val1/dir2_val2/file_val3.txt.phptt ) by value of var
+
+70. (if distinct) move each file by mv and dir to its new version by mkdir
+
+75. remove all old directories
+
+//
+#+BEGIN_SRC
+randnum(){ < /dev/urandom tr -dc A-NP-Za-np-z1-9 | head -c${1:-8};echo;}
+hash_here=`randnum`
+file1_here=/tmp/inputfiles_"$hash_here"
+file2_here=/tmp/outputfiles"$hash_here" 
+
+if test -e "$file1_here" || test -e "$file2_here"
+then
+ echo "You won a lottery, fatal error,file exists:$file1_here, please try again"
+ #return 1
+ #exit 1
+ kill -9 $PROCESS_TTTEMPLATE_PID
+fi
+
+find . | sort > "$file1_here"
+cp "$file1_here" "$file1_here"_res
+#get used variables
+grep --only-matching '{[^}]*}' "$file1_here" | grep --only-matching '[^}{]*' | sort --unique > "$file1_here"_vars
+
+. "$bashinclude01"
+
+cat "$file1_here"_vars | while read var1 ; do 
+ #val1=$(eval echo \$${var1}) #also works
+ val1=`printenv ${var1}`
+ #sed -i 's/{'$var1$hash_here'}/'$val1'/g' "$file1_here"_res
+ sed -i 's/{'${var1}'}/'${val1}'/g' "$file1_here"_res
+done
+
+paste -d"\n" "$file1_here" "$file1_here"_res > "$file1_here"_combined 
+#paste -d"\t" /tmp/inputfiles_naKuWxFy /tmp/inputfiles_naKuWxFy
+
+cat "$file1_here"_combined | while read template1 ; do 
+read res1;
+ if [ "$template1" == "$res1" ]
+ then
+   echo "$template1 equal, continue"
+   continue;
+ fi
+ if test -e "$res1"
+ then
+  echo "FATAL ERROR: $res1 file or dir already exist and can not be made from template (equal result of two templates?)"
+  #return 1
+  #exit 1
+  kill -9 $PROCESS_TTTEMPLATE_PID
+ fi
+ if test -d "$template1"
+ then
+   mkdir "$res1"
+ fi
+ if test -f "$template1"
+ then
+   mv "$template1" "$res1"
+ fi
+done
+
+#remove template directories which should be empty by now
+#tac !!
+tac "$file1_here"_combined | while read res1 ; do 
+read template1;
+ if [ "$template1" == "$res1" ]
+ then
+   echo "$template1 equal, continue"
+   continue;
+ fi
+ if test -d "$template1"
+ then
+   if ! rmdir "$template1"
+   then
+     echo "FATAL ERROR: $template1 directory is not empty: what happend?"
+     #return 1
+     #exit 1
+     kill -9 $PROCESS_TTTEMPLATE_PID
+   fi
+ fi
+done
+
+#+END_SRC
+
+<< '//'
+
+80.  find all files,(no directories), with .phptt extension
+
+90.  process the files with php interpreter. In the result remove .phptt extension from the file. If the file extension is .php.phptt, then replace >?php with <?php and ?< with ?> in that file. 
+100 in step 90 use
+
+<?php
+require 'settings.php';
+require "$template.phptt";
+?>
+to process template with settings. 
+
+110. settings.php and template.phptt may assume that the bash file from step 5 has been sourced first so the environment variables defined there will be available. Thus in settings.php or in template.phptt you can use getenv() php function to retreive settings from the bash file.
+     
+//
+
+#+BEGIN_SRC
+#now process *.php.phptt files first , 1003: sort will prevent fetching already processed files
+#1003: enable three,four,five passes
+for pass01 in 1 2 3 4 5 ; do find . -type f \( -name "*.php.phptt" -or -name "*.phptt.phptt" -or -name "*.phptt.phptt.phptt" -or -name "*.phptt.phptt.phptt.phptt" -or -name "*.phptt.phptt.phptt.phptt.phptt" \) | sort | while read var1 ; do 
+
+ var1php="${var1%.phptt}"
+
+
+ if test -e "$var1php"
+  then
+   echo "FATAL ERROR: $var1php file or dir already exist and can not be made from template"
+   #return 1
+   #exit 1
+   kill -9 $PROCESS_TTTEMPLATE_PID
+ fi
+ echo  '<?php require "'"$phpinclude01"'";require "'"$var1"'";'       >"$file2_here"
+ echo "GOING TO PROCESS:" ; cat "$file2_here"
+ if ! $_PHP001 "$file2_here" > "$var1php"
+ then
+  echo "FATAL ERROR: php processing $var1"
+  #return 1
+  #exit 1
+  kill -9 $PROCESS_TTTEMPLATE_PID
+ fi
+ rm "$var1"
+ sed -i 's/>?php/<?php/g' "$var1php"
+ sed -i 's/?</?>/g' "$var1php"
+ #1003: enable three or more passes
+ sed -i 's/>??php/>?php/g' "$var1php"
+ sed -i 's/>???php/>??php/g' "$var1php"
+ sed -i 's/>????php/>???php/g' "$var1php"
+ sed -i 's/>?????php/>????php/g' "$var1php"
+ 
+ sed -i 's/?????>/????</g' "$var1php"
+
+ sed -i 's/????>/???</g' "$var1php"
+
+ sed -i 's/???>/??</g' "$var1php"
+
+ sed -i 's/??>/?</g' "$var1php"
+done ; done
+
+#now process other *.phptt files
+find . -type f -name "*.phptt" | while read var1 ; do 
+var1php="${var1%.phptt}"
+if test -e "$var1php"
+ then
+  echo "FATAL ERROR: $var1php file or dir already exist and can not be made from template"
+  #return 1
+  #exit 1
+  kill -9 $PROCESS_TTTEMPLATE_PID
+fi
+echo  '<?php require "'"$phpinclude01"'";require "'"$var1"'";'       >"$file2_here"
+echo "GOING TO PROCESS:" ; cat "$file2_here"
+if ! $_PHP001 "$file2_here" > "$var1php"
+then
+  echo "FATAL ERROR: php processing $var1"
+  #return 1
+  #exit 1
+  kill -9 $PROCESS_TTTEMPLATE_PID
+fi
+rm "$var1"
+done
+
+rm "$file2_here"
+exit 0
 
 #+END_SRC
