@@ -118,8 +118,12 @@ BASEDIR01=`pwd`
 ** testtemplate
 
 #+BEGIN_SRC
+#rm -rf /tmp/testtemplate_result
+cd examples/testtemplate/templatedir
+[ "$BASEDIR01" != ""  ] && cd $BASEDIR01/examples/testtemplate/templatedir
+bash ../../../src/process_tttemplate.org "`pwd`"/../config.sh "`pwd`"/../config.php /tmp/testtemplate_result
+cd ../../..
 
-(todo)
 #+END_SRC
    
 ** automake

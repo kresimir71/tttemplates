@@ -7,18 +7,18 @@
 ** Fetch arguments, namely:
 
 - bash input configuration file: 
-   5. a bash file to define variables to be used for replace in step 60. The variables must begin with prefix ttt_, e.g. export ttt_var1=val1
+   (5) a bash file to define variables to be used for replace in step 60. The variables must begin with prefix ttt_, e.g. export ttt_var1=val1
 
 - php input configuration file: 
-   6. a php file to include in step 90.
+   (6) a php file to include in step 90.
 
 - non existing destination directory for output
 
-10. Get destination directory and abort if it exists.
+(10) Get destination directory and abort if it exists.
 
-30. Assumed is that the current directory is the source directory. Copy current directory to destination directory.
+(30) Assumed is that the current directory is the source directory. Copy current directory to destination directory.
 
-40. Change to destination directory.
+(40) Change to destination directory.
 
 //
 
@@ -42,7 +42,7 @@ if [ "$#" == "3" ]
 then
  echo "arg 1:$1"
  echo "arg 2:$2"
- echo "arg 2:$3"
+ echo "arg 3:$3"
 else
  echo "$0:expected 3 arguments"
  #return 1
@@ -74,18 +74,18 @@ cd "$destdir01"
 
 ** Prepare destination directory
   
-50. find all files and directories and sort them deepest last (thus directories also) (bash sort assumed enough)
+(50) find all files and directories and sort them deepest last (thus directories also) (bash sort assumed enough)
 
-60. make new version of the found files and directories by: replace {var} in file names (all directories also, e.g.
+(60) make new version of the found files and directories by: replace {var} in file names (all directories also, e.g.
 
 #+BEGIN_SRC
      dir1_{ttt_var1}/dir2_{ttt_var2}/file_{ttt_var3}.txt.phptt becomes dir1_val1/dir2_val2/file_val3.txt.phptt
 #+END_SRC
     ) by value of var
 
-70. (if distinct) move each file by mv and each directory to its new version by mkdir
+(70) (if distinct) move each file by mv and each directory to its new version by mkdir
 
-75. remove all old directories
+(75) remove all old directories
 
 //
 #+BEGIN_SRC
@@ -170,10 +170,10 @@ done
 
 ** Process templates with php
   
-80.  find all files,(no directories), with .phptt extension
+(80)  find all files,(no directories), with .phptt extension
 
-90.  process the files with php interpreter. In the result remove .phptt extension from the file. If the file extension is .php.phptt, then replace >?php with <?php and ?< with ?> in that file. 
-100. in step 90 use
+(90)  process the files with php interpreter. In the result remove .phptt extension from the file. If the file extension is .php.phptt, then replace >?php with <?php and ?< with ?> in that file. 
+(100) in step (90) use
 
 <?php
 require 'settings.php';
@@ -181,7 +181,7 @@ require "$template.phptt";
 ?>
 to process template with settings. 
 
-110. settings.php and template.phptt may assume that the bash file from step 5 has been sourced first so the environment variables defined there will be available. Thus in settings.php or in template.phptt you can use getenv() php function to retreive settings from the bash file.
+(110) settings.php and template.phptt may assume that the bash file from step 5 has been sourced first so the environment variables defined there will be available. Thus in settings.php or in template.phptt you can use getenv() php function to retreive settings from the bash file.
      
 //
 
