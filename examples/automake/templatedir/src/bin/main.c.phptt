@@ -1,0 +1,5 @@
+#include <stdio.h>
+
+int main() {
+  printf("Welcome to <?php echo getenv('ttt_projectname');?>\n");
+}

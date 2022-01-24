@@ -1,0 +1,19 @@
+AM_CFLAGS = -I$(top_srcdir)/src/lib
+
+lib_LTLIBRARIES = lib<?php echo getenv('ttt_projectname');?>.la
+lib_LIBRARIES = lib<?php echo getenv('ttt_projectname');?>.a
+lib<?php echo getenv('ttt_projectname');?>_la_CPPFLAGS=-DNDEBUG
+lib<?php echo getenv('ttt_projectname');?>_a_CPPFLAGS=$lib<?php echo getenv('ttt_projectname');?>_la_CPPFLAGS
+lib<?php echo getenv('ttt_projectname');?>_la_SOURCES = <?php echo getenv('ttt_projectname');?>.c <?php echo getenv('ttt_projectname');?>.h <?php echo getenv('ttt_projectname');?>_local.h
+lib<?php echo getenv('ttt_projectname');?>_a_SOURCES=$lib<?php echo getenv('ttt_projectname');?>_la_SOURCES
+#DD01_HOWTO(LINUX01_automake) otherincludedir
+#http://stackoverflow.com/questions/5603902/placing-header-files-in-a-subdirectory-of-usr-include-with-automake
+otherincludedir = $(includedir)/<?php echo getenv('ttt_projectname');?>
+otherinclude_HEADERS = <?php echo getenv('ttt_projectname');?>.h
+
+#noinst_PROGRAMS = <?php echo getenv('ttt_projectname');?>_test
+#<?php echo getenv('ttt_projectname');?>_test_SOURCES = pythontest.cpp
+#<?php echo getenv('ttt_projectname');?>_test_LDFLAGS = 
+#<?php echo getenv('ttt_projectname');?>_test_LDADD =   -l<?php echo getenv('ttt_projectname');?> -lpcre
+
+

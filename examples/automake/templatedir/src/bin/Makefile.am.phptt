@@ -1,0 +1,5 @@
+	
+AM_CFLAGS = -I$(top_srcdir)/src/bin
+
+bin_PROGRAMS = <?php echo getenv('ttt_projectname');?>
+<?php echo getenv('ttt_projectname');?>_SOURCES = main.c

@@ -1,0 +1,56 @@
+
+
+typedef struct {
+  pcre * reCompiled;  /* libpcre structure */
+  pcre_extra *pcreExtra; /* libpcre structure */
+} <?php echo getenv('ttt_projectname');?>_token_intern_t;
+
+typedef struct {
+  char* Regex; /*regular expression supplied by the user*/
+  <?php echo getenv('ttt_projectname');?>_token_intern_t intern; /* keeps internal libpcre structures about the token*/
+} <?php echo getenv('ttt_projectname');?>_token_t;
+
+typedef struct {
+  const char *pcreErrorStr; /* compile error message as returned from libpcre */
+  int pcreErrorOffset; /* the position of the error in the regular expression of the token as returned from libpcre*/
+  int pcreErrorTokenNr; /* index of the erronous token in the user supplied sequence.I.e.which token caused the problem*/
+} <?php echo getenv('ttt_projectname');?>_compile_error_t;
+
+typedef struct {
+  int pcreExecRet; /* <0 if error: PCRE_ERROR_NOMATCH or something internal: PCRE_ERROR_NOMEMORY,..., as returned by libpcre. See man libpcre for all possible errors. */
+} <?php echo getenv('ttt_projectname');?>_scan_error_t;
+
+typedef struct {
+  unsigned long length; /* length of the matched text*/
+  unsigned long abs_pos;  /* When token matched, or on error, count from the beginning of the input text, i.e. character position of the beginning of the matched text. It will not be automatically reset to zero when the user supplies a new input string but rather continues counting from the current value. But the user may tweak the value anytime here directly and <?php echo getenv('ttt_projectname');?> will just continue counting from that value. Also correctly set if an error occurres, thus the way of giving error position to the user: 'error token not recognised at position 1234' */
+  unsigned long line_nr; /* line number of the beginning of the matched text. Newline markers are all three common newlines: . It will not be automatically reset to one when the user supplies a new input string but rather continues counting from the current value. But the user may tweak the value anytime here directly and <?php echo getenv('ttt_projectname');?> will just continue counting from that value. Also correctly set if an error occurres, thus the way of giving error position to the user: 'error token not recognised at line 1234'*/
+  unsigned long char_pos; /* count from the beginning of the line: character position of the beginning of the matched text. Goes together with 'line_nr' above. Also correctly set if an error occurres, thus the way of giving error position to the user: 'error token not recognised at position 12' */
+} <?php echo getenv('ttt_projectname');?>_matched_token_t;
+
+typedef struct {
+  char * inputstring; /* text to scan received from the user */
+  unsigned long inputlength; /* length of text to scan received from the user */
+  unsigned long position; /* current position in the input text: it will be reset to zero when the user supplies a new input string by using the function 'give_input' because the new inputstring completely replaces the old one. */
+} <?php echo getenv('ttt_projectname');?>_intern_input_t;
+
+typedef struct {
+  <?php echo getenv('ttt_projectname');?>_intern_input_t input; /* input string to be scanned and the current position in it */
+} <?php echo getenv('ttt_projectname');?>_intern_t;
+
+typedef struct {
+
+  unsigned int nrTokens; /* number of token definitions given by the user */
+  <?php echo getenv('ttt_projectname');?>_token_t token[]; /* list of token definitions given by the user. The length of the list is nrTokens */
+  <?php echo getenv('ttt_projectname');?>_matched_token_t matching; /* matched text: find the result here after call to <?php echo getenv('ttt_projectname');?>_scan() */
+  <?php echo getenv('ttt_projectname');?>_compile_error_t compile_error; /* error in compiling a regular expression: read the error here after call to <?php echo getenv('ttt_projectname');?>_init() or <?php echo getenv('ttt_projectname');?>_recompile_individual_token_definition() */
+  <?php echo getenv('ttt_projectname');?>_scan_error_t scan_error; /* error in scanning: read the error here after call to <?php echo getenv('ttt_projectname');?>_scan() */
+  <?php echo getenv('ttt_projectname');?>_intern_t intern;
+} <?php echo getenv('ttt_projectname');?>_t;
+
+int <?php echo getenv('ttt_projectname');?>_init( <?php echo getenv('ttt_projectname');?>_t* ); /* initialise structures, compile all regular expressions in the list. <?php echo getenv('ttt_projectname');?>_init should not be called twice without calling '<?php echo getenv('ttt_projectname');?>_free' first to avoid memory leaks*/
+void give_input( char*, unsigned long length); /* Must be called after calling <?php echo getenv('ttt_projectname');?>_init() to specify the input text to be scanned. May be called any time to replace completely the current input text to be scanned. When called, the given string replaces completely the current input and becomes the new input. The position and the line counters are not reset. They can be reset directly by the user: just assign them in <?php echo getenv('ttt_projectname');?>_matched_token_t 'matching' in <?php echo getenv('ttt_projectname');?>_t, position to zero and line number to one. */
+char* <?php echo getenv('ttt_projectname');?>_scan( <?php echo getenv('ttt_projectname');?>_t*); /* scan the input for all tokens and choose the longest match */
+char* <?php echo getenv('ttt_projectname');?>_free( <?php echo getenv('ttt_projectname');?>_t*); /* free all structures allocated by <?php echo getenv('ttt_projectname');?> */
+int <?php echo getenv('ttt_projectname');?>_recompile_individual_token_definition( <?php echo getenv('ttt_projectname');?>_token_t* token); /* the user is allowed to add a token to 'token' sequence in <?php echo getenv('ttt_projectname');?>_t at all times. Do not forget to increase also nrTokens there. This function should be called to prepare the added token for usage by libpcre. The function can also be used to prepare a complete new sequence of tokens one by one and to replace the existing sequence in <?php echo getenv('ttt_projectname');?>_t dynamically. Note that '<?php echo getenv('ttt_projectname');?>_init' also uses this function to allocate the token structures one by one token.*/
+int <?php echo getenv('ttt_projectname');?>_free_individual_token_definition( <?php echo getenv('ttt_projectname');?>_token_t* token); /* the user is allowed to remove a token from the 'token' sequence in <?php echo getenv('ttt_projectname');?>_t at all times. Do not forget to decrease nrTokens also. This function should be called to free allocated resources for the removed token. The function can also be used to free a complete sequence of tokens used in <?php echo getenv('ttt_projectname');?>_t one by one. Note that '<?php echo getenv('ttt_projectname');?>_free' also uses this function to free the token structures one by one.*/
+
