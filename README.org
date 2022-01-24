@@ -129,7 +129,12 @@ cd ../../..
 ** automake
 
 #+BEGIN_SRC
-(todo)
+#rm -rf /tmp/automake_result
+cd examples/automake/templatedir
+[ "$BASEDIR01" != ""  ] && cd $BASEDIR01/examples/automake/templatedir
+bash ../../../src/process_tttemplate.org "`pwd`"/../config.sh "`pwd`"/../config.php /tmp/automake_result
+cd ../../..
+
 #+END_SRC
 
 ** wpplugin

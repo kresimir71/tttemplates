@@ -173,6 +173,7 @@ done
 (80)  find all files,(no directories), with .phptt extension
 
 (90)  process the files with php interpreter. In the result remove .phptt extension from the file. If the file extension is .php.phptt, then replace >?php with <?php and ?< with ?> in that file. 
+
 (100) in step (90) use
 
 <?php
