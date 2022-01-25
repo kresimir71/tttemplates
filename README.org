@@ -140,7 +140,11 @@ cd ../../..
 ** wpplugin
 
 #+BEGIN_SRC
-(todo)
+#rm -rf /tmp/wpplugin_result
+cd examples/wpplugin/templatedir
+[ "$BASEDIR01" != ""  ] && cd $BASEDIR01/examples/wpplugin/templatedir
+bash ../../../src/process_tttemplate.org "`pwd`"/../config.sh "`pwd`"/../config.php /tmp/wpplugin_result
+cd ../../..
 #+END_SRC
    
 ** wp admin customizer
