@@ -1,0 +1,34 @@
+>?php
+/**
+<?php echo $args['Introduction'];echo "\n"; ?>
+ *
+ * Plugin Name:     <?php echo $args['Plugin Name'];echo "\n";?>
+ * Plugin URI:      <?php echo $args['Plugin URI'];echo "\n";?>
+ * Github URI:      <?php echo $args['Github URI'];echo "\n";?>
+ * Description:     <?php echo $args['Description'];echo "\n";?>
+ * Author:          <?php echo $args['Author'];echo "\n";?>
+ * Author URI:      <?php echo $args['Author URI'];echo "\n";?>
+ * Version:         <?php echo $args['Version'];echo "\n";?>
+ * Text Domain:     <?php echo $args['Text Domain'];echo "\n";?>
+ * License:         <?php echo $args['License'];echo "\n";?>
+ * License URI:     <?php echo $args['License URI'];echo "\n";?>
+ * Provides:        <?php echo $args['Provides'];echo "\n";?>
+ *
+ * @package         <?php echo $args['@package'];echo "\n";?>
+ * @author          <?php echo $args['@author'];echo "\n";?>
+ * @license         <?php echo $args['@license'];echo "\n";?>
+ * @copyright       <?php echo $args['@copyright'];echo "\n";?>
+ */
+
+// Exit if accessed directly.
+defined( 'ABSPATH' ) || exit;
+
+// Require the main plugin class.
+require_once plugin_dir_path( __FILE__ ) . 'class-<?php echo $args['plugin class'];?>.php';
+
+// Register hooks that are fired when the plugin is activated and deactivated, respectively.
+register_activation_hook( __FILE__, array( '<?php echo $args['Plugin Class'];?>', 'activate' ) );
+register_deactivation_hook( __FILE__, array( '<?php echo $args['Plugin Class'];?>', 'deactivate' ) );
+
+// Get plugin instance.
+<?php echo $args['Plugin Class'];?>::instance();
