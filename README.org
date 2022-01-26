@@ -164,7 +164,11 @@ cd ../../..
 ** php script with arguments
 
 #+BEGIN_SRC
-(todo)
+#rm -rf /tmp/phpargs_result
+cd examples/phpargs/templatedir
+[ "$BASEDIR01" != ""  ] && cd $BASEDIR01/examples/phpargs/templatedir
+bash ../../../src/process_tttemplate.org "`pwd`"/../config.sh "`pwd`"/../config.php /tmp/phpargs_result
+cd ../../..
 #+END_SRC
    
 ** testtemplate02 5 passes

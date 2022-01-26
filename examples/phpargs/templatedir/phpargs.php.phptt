@@ -1,0 +1,16 @@
+>?php
+
+<?php
+$nrargs01=sizeof($args01);
+?>
+
+<?php for($cnt1=1; $cnt1 <= $nrargs01;$cnt1++): ?>
+      if ($argv[<?php echo $cnt1; ?>] !=""){
+		$<?php echo $args01[$cnt1-1]; ?> = "$argv[<?php echo $cnt1; ?>]";
+		  }
+      else{
+			die("argument nr <?php echo $cnt1; ?> is missing");
+      }
+<?php endfor; ?>
+
+
