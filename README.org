@@ -154,7 +154,11 @@ This has worked before. Now at least for illustration.
 *** textarea or color  section
 
 #+BEGIN_SRC
-(todo)
+#rm -rf /tmp/wpcustomizer_result
+cd examples/wpcustomizer/templatedir
+[ "$BASEDIR01" != ""  ] && cd $BASEDIR01/examples/wpcustomizer/templatedir
+bash ../../../src/process_tttemplate.org "`pwd`"/../config.sh "`pwd`"/../config.php /tmp/wpcustomizer_result
+cd ../../..
 #+END_SRC
     
 ** php script with arguments

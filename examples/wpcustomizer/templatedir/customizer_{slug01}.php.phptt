@@ -1,0 +1,81 @@
+>?php
+/**************************************************************************
+Customizer include file
+**************************************************************************/
+
+/**************************************************************************
+Add theme customizer controls, settings etc.
+**************************************************************************/
+function <?php echo $projprefix01; ?>_customize_register( $wp_customize ) {
+	
+	/*******************************************
+	Sections
+	********************************************/
+	
+	<?php foreach ( $sections01 as $section ) : ?>
+		$wp_customize->add_section( '<?php echo $section['id']; ?>' , array(
+			'title' => __( '<?php echo $section['title']; ?>', '<?php echo $textdomain01; ?>')
+			) );
+	<?php endforeach; ?>
+	
+	/********************
+	Help class
+	*********************/
+	
+	// create class to define textarea controls in Customizer
+	class <?php echo $projprefix01; ?>_Customize_Textarea_Control extends WP_Customize_Control {
+		
+		public $type = 'textarea';
+		public function render_content() {
+			
+			echo '<label>';
+				echo '<span class="customize-control-title">' . esc_html( $this-> label ) . '</span>';
+				echo '<textarea rows="2" style ="width: 100%;"';
+				$this->link();
+				echo '>' . esc_textarea( $this->value() ) . '</textarea>';
+			echo '</label>';
+			
+		}
+	}	
+
+	/********************
+	Define generic controls
+	*********************/
+
+	<?php foreach ( $sections01 as $section ) : ?>
+	<?php foreach ( $section['settings'] as $setting ) : ?>
+	<?php if ( $setting['type'] == 'textarea' ) : ?>
+        
+	$wp_customize->add_setting( '<?php echo $setting['setting']; ?>', array (
+		'default' => __( '<?php echo $setting['default']; ?>', '<?php echo $textdomain01; ?>' )
+	) );
+	$wp_customize->add_control( new <?php echo $projprefix01; ?>_Customize_Textarea_Control(
+		$wp_customize,
+		'<?php echo $setting['setting']; ?>',
+		array( 
+			'label' => __( '<?php echo $setting['label']; ?>', '<?php echo $textdomain01; ?>' ),
+			'section' => '<?php echo $section['id']; ?>',
+			'settings' => '<?php echo $setting['setting']; ?>'
+	)));
+	<?php endif; ?>
+	<?php if ( $setting['type'] == 'colorpicker' ) : ?>
+        
+	$wp_customize->add_setting( '<?php echo $setting['setting']; ?>', array (
+		'default' => __( '<?php echo $setting['default']; ?>', '<?php echo $textdomain01; ?>'),	
+		'type' => 'option'
+	) );
+	$wp_customize->add_control( new WP_Customize_Color_Control(
+		$wp_customize,
+		'<?php echo $setting['setting']; ?>',
+		array( 
+			'label' => __( '<?php echo $setting['label']; ?>', '<?php echo $textdomain01; ?>' ),
+			'section' => '<?php echo $section['id']; ?>',
+			'settings' => '<?php echo $setting['setting']; ?>'
+	)));
+	<?php endif; ?>
+	<?php endforeach; ?>
+	<?php endforeach; ?>	
+}
+add_action( 'customize_register', '<?php echo $projprefix01; ?>_customize_register' );
+
+

@@ -1,0 +1,3 @@
+<?php
+echo "textdomain01:$textdomain01, expected:kk71translation\n";
+echo "projprefix01:$projprefix01, expected:kk71test";
