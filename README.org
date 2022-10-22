@@ -1,4 +1,15 @@
 * Introduction
+Once upon a time when people talked about developing WordPress plug-ins, they usually also referred to boiler templates. A very famous one was
+
+https://github.com/DevinVinson/WordPress-Plugin-Boilerplate/
+
+Early year 2022 I published multipass boilerplate templates in bash and php that handle a particular directory.
+This is a set of scripts that handles boilerplate templates written in bash and php with lots of examples:
+
+https://github.com/kresimir71/tttemplates
+
+It is also possible to process file in multiple passes.
+
 This is a suite of scripts that processes boilerplate templates written in bash and php. It works like this:
 
 The utility takes a directory tree of template files of following sorts:
