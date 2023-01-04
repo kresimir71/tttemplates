@@ -6,7 +6,8 @@ $args = array(
  * The WPMUDEV Appointments+ configuration tool
  *
  * To fill the appontments+ configuration with some specific items which we receive from the administration panels. Intended to streamline and strongly simplify the process of configuration.
-HEREDOC,
+HEREDOC
+,
 
    'Plugin Name' => getenv('ttt_Plugin_Name'),
    'Plugin Slug' => getenv('ttt_plugin_slug'),   
