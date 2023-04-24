@@ -26,6 +26,15 @@ if ( ! class_exists( '<?php echo $args['Plugin Class'];?>', false ) ) {
 		protected $options = array();
 
 		/**
+		 * Network option array.
+		 *
+		 * @access      protected
+		 * @var         array $options Array of network config options
+		 * @since       ?.0.0
+		 */
+		protected $networkoptions = array();
+
+		/**
 		 * Use this value as the text domain when translating strings from this plugin. It should match
 		 * the Text Domain field set in the plugin header, as well as the directory name of the plugin.
 		 * Additionally, text domains should only contain letters, number and hypens, not underscores
@@ -99,6 +108,9 @@ if ( ! class_exists( '<?php echo $args['Plugin Class'];?>', false ) ) {
 			$defaults = array(
 				'demo' => false,
 			);
+			$networkdefaults = array(
+				'demo' => false,
+			);
 
 			// If multisite is enabled.
 			if ( is_multisite() ) {
@@ -109,17 +121,21 @@ if ( ! class_exists( '<?php echo $args['Plugin Class'];?>', false ) ) {
 				foreach ( $plugins as $file => $plugin ) {
 					if ( strpos( $file, '<?php echo $args['Plugin Slug'];?>.php' ) !== false ) {
 						$this->plugin_network_activated = true;
-						$this->options                  = get_site_option( '<?php echo $args['Plugin Class'];?>', $defaults );
+						//$this->options                  = get_site_option( '<?php echo $args['Plugin Class'];?>', $defaults );
 					}
 				}
 			}
 
 			// If options aren't set, grab them now!
+			/*
 			if ( empty( $this->options ) ) {
 				$this->options = get_option( '<?php echo $args['Plugin Class'];?>', $defaults );
 			} else {
 				$this->options = get_option( '<?php echo $args['Plugin Class'];?>', $this->options );
 			}
+			*/
+			$this->options = get_option( '<?php echo $args['Plugin Class'];?>', $defaults );
+			$this->networkoptions = get_site_option( '<?php echo $args['Plugin Class'];?>', $networkdefaults );			
 		}
 
 		/**
